@@ -29,14 +29,111 @@ def annotate_chart():
     # Custom arrow
     arrowprops=dict(facecolor='black', shrink=0.05)
     )
+    ax.set_title("text & custom arrow")
 
     plt.show()
     plt.close()
 
+
     import matplotlib.patches as patches
     # figure 2
     fig, ax = plt.subplots()
+
+    # Plot
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     
+    # Add rectangle
+    ax.add_patch(
+    patches.Rectangle(
+    (df.iat[25, 0],df.iat[25, 1]), # (x,y) left_bottom
+    50, # width
+    50, # height
+    # You can add rotation as well with 'angle'
+    alpha=0.3, facecolor="red", edgecolor="black", linewidth=3, linestyle='solid'
+    )
+    )
+    ax.set_title("rectangle patch")
+
+    plt.show()
+    plt.close()
+
+
+    # figure3
+    fig, ax = plt.subplots()
+
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
+ 
+    # Annotation
+    ax.add_patch(
+    patches.Circle(
+    (df.iat[25, 0],df.iat[25, 1]),           # (x,y), the center
+    30,                    # radius
+    alpha=0.3, facecolor="green", edgecolor="black", linewidth=1, linestyle='solid'
+    )
+    )
+    ax.set_title("circle patch")
+
+    plt.show()
+    plt.close()
+
+
+    # figure 4
+    fig, ax = plt.subplots()
+
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
+    ax.add_patch(
+    patches.Ellipse(
+    (df.iat[25, 0],df.iat[25, 1]), # (x,y)
+    30, # width
+    100, # height
+    45, # radius
+    alpha=0.3, facecolor="green", edgecolor="black", linewidth=1, linestyle='solid'
+    )
+    )
+    ax.set_title("ellipse patch")
+
+    plt.show()
+    plt.close()
+
+
+    # figure 5
+    fig, ax = plt.subplots()
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
+
+    # Annotation 
+    ax.plot([80, 40], [30, 90], color="skyblue", lw=5, linestyle='solid', label="_not in legend")
+    ax.set_title("segment, acturally straight line")
+
+    plt.show()
+    plt.close()
+
+
+    # figure 6
+    fig, ax = plt.subplots()
+
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
+    
+    # Annotation
+    ax.axvline(df.iat[25, 0], color='r')
+    ax.axhline(df.iat[25, 1], color='green')
+    ax.set_title("vertical and horizental lines")
+
+    plt.show()
+    plt.close()
+
+
+    # figure 7
+    fig, ax = plt.subplots()
+
+    ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
+    
+    # Annotation
+    ax.text(40, 00, r'equation: $\sum_{i=0}^\infty x_i$', fontsize=20)
+    ax.set_title("math, by text with content of equation")
+
+    plt.show()
+    plt.close()
+
 
 
 if __name__ == "__main__":
