@@ -1,3 +1,13 @@
+#!/usr/bin/python3
+#encoding: utf-8
+'''
+@File    :   scatter_plot.py
+@Time    :   2020/06/16 10:38:01
+@Author  :   Qingfeng 
+@Version :   1.0
+@Contact :   2267647906@qq.com
+'''
+
 import matplotlib
 matplotlib.use("Qt5Agg")
 from matplotlib import pyplot as plt
@@ -11,7 +21,7 @@ def scatter_plot():
 
     # figure1
     fig, ax=plt.subplots()
-
+    fig.canvas.set_window_title("Scatter: basic")
     # plot
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     ax.set_title("Basic scatter plot")
@@ -22,7 +32,7 @@ def scatter_plot():
 
     # figure2
     fig, ax=plt.subplots()
-
+    fig.canvas.set_window_title("Scatter: marker shape")
     all_poss=['.','o','v','^','>','<','s','p','*','h','H','D','d','1','','']
 
     # to see all possibilities:
@@ -53,6 +63,8 @@ def scatter_plot():
 
     # figure3
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("Scatter: marker size")
+
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='D', markersize=16)
     ax.set_title("marker size")
 
@@ -62,6 +74,7 @@ def scatter_plot():
 
     # figure4
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("Scatter: marker color")
 
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', markerfacecolor='skyblue', marker="o", markeredgecolor="black", markersize=16)
     ax.set_title("marker color")
@@ -72,6 +85,7 @@ def scatter_plot():
 
     # figure5
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("Scatter: marker edge")
 
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='D', markersize=16, markeredgecolor="orange", markeredgewidth=5)
     ax.set_title("marker edge")

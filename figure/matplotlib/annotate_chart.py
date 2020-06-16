@@ -1,3 +1,13 @@
+#!/usr/bin/python3
+#encoding: utf-8
+'''
+@File    :   annotate_chart.py
+@Time    :   2020/06/16 10:37:20
+@Author  :   Qingfeng 
+@Version :   1.0
+@Contact :   2267647906@qq.com
+'''
+
 import matplotlib
 matplotlib.use("Qt5Agg")
 from matplotlib import pyplot as plt
@@ -16,6 +26,7 @@ def annotate_chart():
 
     # figure 1
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("Annotate text + arrow")
     # Basic chart
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     
@@ -38,7 +49,7 @@ def annotate_chart():
     import matplotlib.patches as patches
     # figure 2
     fig, ax = plt.subplots()
-
+    fig.canvas.set_window_title("Annotate rectangle patch")
     # Plot
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     
@@ -60,7 +71,7 @@ def annotate_chart():
 
     # figure3
     fig, ax = plt.subplots()
-
+    fig.canvas.set_window_title("annotate circle patch")
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
  
     # Annotation
@@ -79,7 +90,7 @@ def annotate_chart():
 
     # figure 4
     fig, ax = plt.subplots()
-
+    fig.canvas.set_window_title("annotate ellipse patch")
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     ax.add_patch(
     patches.Ellipse(
@@ -98,6 +109,7 @@ def annotate_chart():
 
     # figure 5
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("annotate segment")
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
 
     # Annotation 
@@ -110,7 +122,7 @@ def annotate_chart():
 
     # figure 6
     fig, ax = plt.subplots()
-
+    fig.canvas.set_window_title("annotate vertial and horizental lines")
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     
     # Annotation
@@ -124,6 +136,7 @@ def annotate_chart():
 
     # figure 7
     fig, ax = plt.subplots()
+    fig.canvas.set_window_title("annate math")
 
     ax.plot( 'x_value', 'y_value', data=df, linestyle='none', marker='o')
     
