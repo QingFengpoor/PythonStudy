@@ -9,6 +9,8 @@
 '''
 
 from box_plot import box_plot
+from density_2d import density_2d
 
 if __name__ == "__main__":
     box_plot()
+    density_2d()
