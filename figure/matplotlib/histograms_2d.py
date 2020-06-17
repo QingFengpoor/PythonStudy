@@ -30,14 +30,16 @@ def histograms_2d():
     ax1 = fig.add_subplot(gs[0, 0])
     ax1.hist2d(x, y, bins=(50, 50), cmap=plt.cm.jet)
     ax1.set_title("Big bins")
-    # how to make axes be suqare?
-    # pos = list(ax1.get_position().bounds)
-    # print(pos)
-    # pos[-2] = pos[-1]
-    # print(pos)
-    # ax1.set_position(pos)  #  why this make the axes disappear
-    # print(ax1.get_position().bounds)
-    # # plt.show()
+    
+    # ax1_x, ax1_y, w, h = ax1.get_position().bounds
+    # l = ax1.figure.subplotpars.left
+    # r = ax1.figure.subplotpars.right
+    # t = ax1.figure.subplotpars.top
+    # b = ax1.figure.subplotpars.bottom
+    # print(l, r, t, b)
+    # figw = float(h)/(r-l)
+    # figh = float(h)/(t-b)
+    # ax1.figure.set_size_inches(figw, figh)
     
     # Small bins
     ax2 = fig.add_subplot(gs[0, 1])
