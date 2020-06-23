@@ -30,21 +30,27 @@
     - [7.4 function of map](#74-function-of-map)
     - [7.5 lambda](#75-lambda)
   - [8 iterator](#8-iterator)
-    - [introduction](#introduction)
+    - [8.1 introduction](#81-introduction)
+    - [8.2 custom iterator](#82-custom-iterator)
+  - [9 generator](#9-generator)
+    - [9.1 compare to while loop and iterator](#91-compare-to-while-loop-and-iterator)
+  - [10 decorator](#10-decorator)
+  - [11 module and package](#11-module-and-package)
+    - [11.1 module](#111-module)
+    - [11.2 package](#112-package)
+  - [12 Exception handling](#12-exception-handling)
+    - [12.1 try & except](#121-try--except)
+    - [12.2 custom exception](#122-custom-exception)
+  - [13 read and write file](#13-read-and-write-file)
+    - [13.1 read file](#131-read-file)
+    - [13.2 write file](#132-write-file)
+    - [13.3 binary file](#133-binary-file)
+    - [13.4 with](#134-with)
+  - [14 object-oriented](#14-object-oriented)
+  - [14 regular expression](#14-regular-expression)
+  - [15 process and thread](#15-process-and-thread)
 
-- function
-
-- iterator
-
-- generator
-
-- decorator
-
-- module and package
-
-- Exception
-
-- file read and write
+- read and write file
 
 - object-oriented
 
@@ -129,7 +135,7 @@ double quotes (""").
 the '+' operation will concatenate two strings. example:  
 'a'+'b' is equal to 'ab'. and the '*'  operation will make  
 string concatenate itself some times. example: 'a'*3 is equal  
-to 'aaa'.
+to `'aaa'`.
 
 ### 3.2 function
 
@@ -495,4 +501,569 @@ print(map(add, a, b))
 
 ## 8 iterator
 
-### introduction
+### 8.1 introduction
+
+explicitly created by iter().  
+
+An iterator is an object that can remember the position of traversal.  
+
+The iterator object is accessed from the first element of the collection until all elements are accessed. The iterator can only go forward without going backward.  
+
+Iterator has two basic methods: iter() and next().  
+
+String, list or tuple objects can be used to create iterators  
+
+example:  
+
+```python
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+print (next(it))   # 输出迭代器的下一个元素
+# 1
+print (next(it))
+# 2
+```
+
+traverse:  
+
+```python
+l=[1,2,3,4]
+it = iter(l)    # 创建迭代器对象
+
+# method 1
+for x in it:
+    print (x, end=" ")
+# 1 2 3 4
+
+# method 2
+while True:
+    try:
+        print (next(it), end=" ")
+    except StopIteration:
+        sys.exit()
+# 1 2 3 4
+```
+
+enumerate(iteration or iterable object) will return a tuple consist of (index, value):
+
+```python
+l = [2, 4, 6]
+
+for i, n in enumerate(l):
+  print("pos", i, "is", n)
+# pos 0 is 2
+# pos 1 is 4
+# pos 2 is 6
+```
+
+### 8.2 custom iterator
+
+must implement two methods `__iter__`() and `__next__`().
+
+```python
+class ReverseListIterator(object):
+
+    def __init__(self, list):
+        self.list = list
+        self.index = len(list)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.index -= 1
+        if self.index >= 0:
+            return self.list[self.index]
+        else:
+            raise StopIteration
+
+x = range(10)
+for i in ReverseListIterator(x):
+    print(i, end=" ")
+# 9 8 7 6 5 4 3 2 1 0
+```
+
+The StopIteration exception is used to mark the completion of the iteration and prevent the occurrence of an infinite loop. In the `__next__`() method, we can set the StopIteration exception to be triggered after the specified number of cycles is completed to end the iteration.
+
+another example which exposes a problem about iterator and iteration.
+
+```python
+class Collatz(object):
+
+    def __init__(self, start):
+        self.value = start
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.value == 1:
+            raise StopIteration
+        elif self.value % 2 == 0:
+            self.value = self.value / 2
+        else:
+            self.value = 3 * self.value + 1
+        return self.value
+
+for x in Collatz(7):
+    print(x, end=" ")
+# 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+i = Collatz(7)
+for x, y in zip(i, i):
+    print x, y
+# 22 11
+# 34 17
+# 52 26
+# 13 40
+# 20 10
+# 5 16
+# 8 4
+# 2 1
+```
+
+[the solution reference](https://nbviewer.jupyter.org/github/lijin-THU/notes-python/blob/master/05-advanced-python/05.09-iterators.ipynb)
+
+## 9 generator
+
+### 9.1 compare to while loop and iterator
+
+```python
+# while loop
+<do setup>
+result = []
+while True:
+    <generate value>
+    result.append(value)
+    if <done>:
+        break
+
+# iterator
+class GenericIterator(object):
+    def __init__(self, ...):
+        <do setup>
+        # 需要额外储存状态
+        <store state>
+    def next(self):
+        <load state>
+        <generate value>
+        if <done>:
+            raise StopIteration()
+        <store state>
+        return value
+
+# generator
+def generator(...):
+    <do setup>
+    while True:
+        <generate value>
+        # yield 说明这个函数可以返回多个值！
+        yield value
+        if <done>:
+            break
+```
+
+the generator uses the yield keyword to output the value, and the iterator returns the value through the next return; unlike the iterator, the generator automatically records the current state, and the iterator requires additional operations to record the current status.
+
+```python
+# collatz conjecture
+
+# method 1 basic loop
+def collatz(n):
+    sequence = []
+    while n != 1:
+        if n % 2 == 0:
+            n /= 2
+        else:
+            n = 3*n + 1
+        sequence.append(n)
+    return sequence
+
+for x in collatz(7):
+    print(x, end=" ")
+# 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+
+# method 2 iterator
+class Collatz(object):
+    def __init__(self, start):
+        self.value = start
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.value == 1:
+            raise StopIteration()
+        elif self.value % 2 == 0:
+            self.value = self.value/2
+        else:
+            self.value = 3*self.value + 1
+        return self.value
+
+for x in Collatz(7):
+    print( x, end=" ")
+# 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+
+# method 3 generator
+def collatz(n):
+    while n != 1:
+        if n % 2 == 0:
+            n /= 2
+        else:
+            n = 3*n + 1
+        yield n
+# generator will return a iterator
+
+for x in collatz(7):
+    print(x, end=" ")
+# 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+
+# generator support __next__() and __iter__().
+```
+
+## 10 decorator
+
+[read reference](https://www.cnblogs.com/huchong/p/7725564.html)  
+question: decorating class will have different activation.  
+detail:  
+
+```python
+class Foo(object):
+    def __init__(self, func):
+        self._func = func
+
+    def __call__(self):
+        print('class decorator runing')
+        self._func()
+        print('class decorator ending')
+
+
+@Foo　　# bar = Foo(bar)
+def bar():
+    print('bar')
+
+
+bar()　　# Foo(bar)()
+
+# class decorator runing
+# bar
+# class decorator ending
+
+class Foo(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, func):
+        def _call(*args, **kw):
+            print('class decorator runing')
+            return func(*args, **kw)
+
+        return _call
+
+
+class Bar(object):
+    @Foo()
+    def bar(self, test, ids):   # bar = Foo()(bar)
+        print('bar')
+
+
+Bar().bar('aa', 'ids')
+```
+
+## 11 module and package
+
+### 11.1 module
+
+a py file can be a module, and when use this module, just import it like this  
+"import xxx". in jupyter, while import a module, this module will be run.  
+when import a module secondly, the module will not be run at the last time.  
+
+about distinct script and module:  
+
+the property of `__name__` will be `__main__`, only when the file is used as script.  
+
+### 11.2 package
+
+example of package:  
+folder:foo/  
+files in foo:  
+
+- `__init__`.py
+- bar.py
+- baz.py
+
+requirements of import package:  
+
+- the folder of foo in the search path of Python.
+- `__init__.py`  is used to indicate the foo is a package, and it can be empty.  
+
+common stand library:
+
+- re
+- copy
+- math, cmath
+- decimal, fraction
+- sqlite3
+- os, os.path
+- gzip, bz2, zipfile, tarfile
+- csv, netrc
+- xml
+- htmllib
+- ftplib, socket
+- cmd
+- pdb
+- profile, cProfile, timeit
+- collections, heapq, bisect
+- mmap
+- threading, Queue
+- multiprocessing
+- subprocess
+- pickle, cPickle
+- struc
+
+## 12 Exception handling
+
+### 12.1 try & except
+
+once there is an exception in the content of the try block, the content behind  
+the try block will be ignored, and Python will find if there is no corresponding  
+content in the except. If it is found, the corresponding block will be executed.  
+If not, the exception will be thrown.  
+__note__: catch maybe not exist.
+
+except:  
+
+```python
+import math
+
+while True:
+    try:
+        text = raw_input('> ')
+        if text[0] == 'q':
+            break
+        x = float(text)
+        y = math.log10(x)
+        print "log10({0}) = {1}".format(x, y)
+    except ValueError:
+        print "the value must be greater than 0"
+# > -1
+# the value must be greater than 0
+# > 0
+# the value must be greater than 0
+# > 1
+# log10(1.0) = 0.0
+# > q
+```
+
+'except Exception :' means catching all exception.  
+'except (ValueError, ZeroDivisionError): ' will catch 'ValueError' and 'ZeroDivisionError'.
+'except (ValueError, ZeroDivisionError)' is equal to  
+'except ValueError:  
+&nbsp; `statements`  
+except ZeroDivisionError:  
+&nbsp; `statements`'  
+
+class Exception has 'message' property, and this property have the detail of  
+this exception.
+
+try/catch has a optional keyword finally. No matter there is exception in try block,  
+finally will be run.  
+
+```python
+try:
+    print 1 / 0
+except ZeroDivisionError:
+    print 'divide by 0.'
+finally:
+    print 'finally was called.'
+# divide by 0.
+# finally was called.
+```
+
+### 12.2 custom exception
+
+```python
+class CommandError(ValueError):
+    pass
+# class 'CommandError' inherits 'ValueError'.
+
+valid_commands = {'start', 'stop', 'pause'}
+
+while True:
+    command = raw_input('> ')
+    try:
+        if command.lower() not in valid_commands:
+            raise CommandError('Invalid commmand: %s' % command)
+    except CommandError:
+        print 'Bad command string: "%s"' % command
+
+# class 'Exception' get string as message.
+```
+
+## 13 read and write file
+
+create test.txt in jupyter and input something.  
+
+```jupyter
+%%writefile test.txt
+this is a test file.
+hello world!
+python is good!
+today is a good day.
+```
+
+### 13.1 read file
+
+- there are two methods to read file:  
+
+1. f = open('test.txt')
+2. f = file('test.txt')
+
+these two functions open files by default by reading. if file not exists, throw error.  
+
+- after open file, there are several methods to read.
+
+1. f.read() will read all content of the file.
+2. f.readlines() will return a list consisted of all lines of the file.
+
+- at the end, after using file, close it is required.  
+__f.close()__  
+
+__note__: if file is used as iteration, it will be equal to f.readlines().  
+
+- remove file
+
+```python
+import os
+os.remove('test.txt')
+```
+
+### 13.2 write file
+
+commonly, the steps to write file are as following:
+
+```python
+# 1. open file by write
+f = open('myfile.txt', 'w')
+
+# 2. use write function to write
+f.write('hello world!')
+
+# 3. close file
+f.close()
+
+print(open('myfile.txt').read())
+# hello world!
+```
+
+- 'w'
+when we open file by write, if file does not exist, the file will be created.  
+if file exists, the file will be __overwrite__.  
+
+```python
+f = open('myfile.txt', 'w')
+f.write('another words!')
+f.close()
+print(open('myfile.txt').read())
+# another words!
+```
+
+- 'a'
+'a' means appending. this will avoid overwriting.
+
+```python
+f = open('myfile.txt', 'a')
+f.write('... and more')
+f.close()
+print(open('myfile.txt').read())
+# another words!... and more
+```
+
+- 'w+'
+'w+' means read and write.
+
+```python
+f = open('myfile.txt', 'w+')
+f.write('hello world!')
+f.seek(6)
+print f.read()
+f.close()
+# world!
+
+import os
+os.remove('myfile.txt')
+```
+
+f.seek(6) means moving to sixth character, and then, f.read() will read the rest.
+
+in different OS, the line break character may be different:
+
+- \r
+- \n
+- \r\n
+
+using U param will treat these three as \n.
+
+### 13.3 binary file
+
+- `'wb'`
+write in binary
+
+- `'rb'`
+read in binary
+
+```python
+import os
+f = open('binary.bin', 'wb')
+f.write(os.urandom(16))
+f.close()
+
+f = open('binary.bin', 'rb')
+print(f.read())
+# '\x86H\x93\xe1\xd8\xef\xc0\xaa(\x17\xa9\xc9\xa51\xf1\x98'
+f.close()
+
+import os
+os.remove('binary.bin')
+```
+
+__note__: while write file, if exception happens, the writing may be not correct.  
+under this condition, use try/catch/finally. and it will make sure write file correctly  
+put the action of closing file in block finally.
+
+### 13.4 with
+
+when open file with keyword 'with', the file will be closed after the code block run.  
+this has the same effect as try/catch/finally, and easier.  
+
+## 14 object-oriented
+
+reference:  
+
+- [1. `Eva-J`](https://www.cnblogs.com/Eva-J/articles/7293890.html#_label3)
+- [2. `日上百万`](https://blog.csdn.net/weixin_44239490/article/details/86357989)
+
+note:  
+
+1. namespace
+create a class will create its namespace used to store it properties.  
+class has two different types of property:
+
+- static property
+  the variable defined in class.  
+  the variable will be shared among all objects.
+- dynamic property
+  the method defined in class.  
+  the method will be bunded to all objects.
+
+## 14 regular expression
+
+[regular expression](https://nbviewer.jupyter.org/github/lijin-THU/notes-python/blob/master/05-advanced-python/05.04-regular-expression.ipynb)
+
+## 15 process and thread
+
+[1.0 `廖雪峰python3`](https://www.liaoxuefeng.com/wiki/1016959663602400/1017627212385376)
+
+__note__:  
+multithreading only use one core of CPU in python. multiprocessing is not.  
+considering stability, multiprocessing is better.  
+model: Master/Worker  
