@@ -50,16 +50,6 @@
   - [14 regular expression](#14-regular-expression)
   - [15 process and thread](#15-process-and-thread)
 
-- read and write file
-
-- object-oriented
-
-- regular expression
-
-- network programming
-
-- processes and threads
-
 ## 1 data types
 
 ### 1.1 common data types
@@ -920,7 +910,7 @@ today is a good day.
 
 these two functions open files by default by reading. if file not exists, throw error.  
 
-- after open file, there are several methods to read.
+- after open file, there are several methods to read.  
 
 1. f.read() will read all content of the file.
 2. f.readlines() will return a list consisted of all lines of the file.
@@ -930,7 +920,7 @@ __f.close()__
 
 __note__: if file is used as iteration, it will be equal to f.readlines().  
 
-- remove file
+- remove file  
 
 ```python
 import os
@@ -939,7 +929,7 @@ os.remove('test.txt')
 
 ### 13.2 write file
 
-commonly, the steps to write file are as following:
+commonly, the steps to write file are as following:  
 
 ```python
 # 1. open file by write
@@ -955,7 +945,7 @@ print(open('myfile.txt').read())
 # hello world!
 ```
 
-- 'w'
+- 'w'  
 when we open file by write, if file does not exist, the file will be created.  
 if file exists, the file will be __overwrite__.  
 
@@ -967,7 +957,7 @@ print(open('myfile.txt').read())
 # another words!
 ```
 
-- 'a'
+- 'a'  
 'a' means appending. this will avoid overwriting.
 
 ```python
@@ -978,7 +968,7 @@ print(open('myfile.txt').read())
 # another words!... and more
 ```
 
-- 'w+'
+- 'w+'  
 'w+' means read and write.
 
 ```python
@@ -993,23 +983,23 @@ import os
 os.remove('myfile.txt')
 ```
 
-f.seek(6) means moving to sixth character, and then, f.read() will read the rest.
+f.seek(6) means moving to sixth character, and then, f.read() will read the rest.  
 
-in different OS, the line break character may be different:
+in different OS, the line break character may be different:  
 
 - \r
 - \n
 - \r\n
 
-using U param will treat these three as \n.
+using U param will treat these three as \n.  
 
 ### 13.3 binary file
 
-- `'wb'`
-write in binary
+- `'wb'`  
+write in binary  
 
-- `'rb'`
-read in binary
+- `'rb'`  
+read in binary  
 
 ```python
 import os
@@ -1039,29 +1029,29 @@ this has the same effect as try/catch/finally, and easier.
 
 reference:  
 
-- [1. `Eva-J`](https://www.cnblogs.com/Eva-J/articles/7293890.html#_label3)
-- [2. `日上百万`](https://blog.csdn.net/weixin_44239490/article/details/86357989)
+- [1. `Eva-J`](https://www.cnblogs.com/Eva-J/articles/7293890.html#_label3)  
+- [2. `日上百万`](https://blog.csdn.net/weixin_44239490/article/details/86357989)  
 
 note:  
 
-1. namespace
+1. namespace  
 create a class will create its namespace used to store it properties.  
 class has two different types of property:
 
-- static property
+- static property  
   the variable defined in class.  
   the variable will be shared among all objects.
-- dynamic property
+- dynamic property  
   the method defined in class.  
   the method will be bunded to all objects.
 
 ## 14 regular expression
 
-[regular expression](https://nbviewer.jupyter.org/github/lijin-THU/notes-python/blob/master/05-advanced-python/05.04-regular-expression.ipynb)
+[regular expression](https://nbviewer.jupyter.org/github/lijin-THU/notes-python/blob/master/05-advanced-python/05.04-regular-expression.ipynb)  
 
 ## 15 process and thread
 
-[1.0 `廖雪峰python3`](https://www.liaoxuefeng.com/wiki/1016959663602400/1017627212385376)
+[1.0 `廖雪峰python3`](https://www.liaoxuefeng.com/wiki/1016959663602400/1017627212385376)  
 
 __note__:  
 multithreading only use one core of CPU in python. multiprocessing is not.  
