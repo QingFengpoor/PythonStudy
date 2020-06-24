@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test</title>
+    </head>
+    <body>
+        <div>
+            <h1>{{hello}}</h1>
+            <p>{{name}}</p><br>
+            <p>name:  {{person.name}}</p>
+            <p>sex:  {{person.sex}}</p>
+            <p>{% if person.sex|stringformat:"s" == "male" %} age:  {{person.age}} {% endif %}</p>
+        </div>
+        <div>{% include "hello.html" %}</div>
+        <div>{{runoob|safe}}</div>
+    </body>
+</html>

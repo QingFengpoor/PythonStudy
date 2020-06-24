@@ -11,5 +11,18 @@
             "program": "${file}",
             "console": "integratedTerminal"
         },
+        {
+            "name":"Python: Django",
+            "type":"python",
+            "request":"launch",
+            "program":"${file}",
+            // "program":"${file}\\..\\manage.py",
+            "console":"integratedTerminal",
+            "args":[
+                "runserver",
+                "0.0.0.0:8080",
+            ],
+            "django":true
+        },
     ]
 }
