@@ -2,10 +2,17 @@
 
 - [Django notes](#django-notes)
   - [day 1: environment and a simple project](#day-1-environment-and-a-simple-project)
+    - [environment](#environment)
+    - [simple project](#simple-project)
   - [day 2: more about HelloWorld](#day-2-more-about-helloworld)
+    - [view and template](#view-and-template)
+    - [model](#model)
 
 ## day 1: environment and a simple project
 
+### environment
+
+windows10, python3, vs code, MySQL8
 steps:  
 
 - install Django  
@@ -14,6 +21,8 @@ steps:
 - install mysql8  
   go to MySQL community download [installer](https://dev.mysql.com/downloads/windows/installer/8.0.html)  
   download [DBeaver](https://dbeaver.io/files/dbeaver-ce-latest-x86_64-setup.exe), tool of database management
+
+### simple project
 
 - open cmd, and switch to expected directory. then run command:  
   django-admin.py startproject HelloWorld  
@@ -51,6 +60,8 @@ steps:
   open 127.0.0.1:8080 in web browser.
 
 ## day 2: more about HelloWorld
+
+### view and template
 
 - create folders, views and templates  
   create folder views in HelloWorld/HelloWorld  
@@ -160,6 +171,8 @@ TEMPLATES = [
     ```
 
   launch project, and visit 127.0.0.1:8080/hello and 127.0.0.1:8080/runoob.
+
+### model
 
 - model  
   to connect database, APP is required. use command:  
