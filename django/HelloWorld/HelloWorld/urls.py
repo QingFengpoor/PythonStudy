@@ -16,12 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import hello, testdb
+from .views import hello, testdb, search, search2
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello.hello),
     path('runoob/', hello.runoob),
-    path('testdb/', testdb.testdb)
+    path('testdb/', testdb.testdb),
+    path('search/', search.search),
+    path("search-form", search.search_form),
+    path('search-post', search2.search_post),
     # re_path(r'\w*hello\w*', views.hello),
 ]
